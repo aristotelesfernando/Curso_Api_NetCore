@@ -15,8 +15,16 @@ namespace Shop.Controllers
         [Route("")]
         public async Task<ActionResult<List<Category>>> Get([FromServices] DataContext context)
         {
-            var category = await context.Categories.AsNoTracking().ToListAsync();
-            return Ok(category);
+            try
+            {
+                var category = await context.Categories.AsNoTracking().ToListAsync();
+                return Ok(category);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
         [HttpGet]
@@ -26,10 +34,16 @@ namespace Shop.Controllers
             int id
         )
         {
-            var categories = await context.Categories.
-                AsNoTracking().
-                FirstOrDefaultAsync(x => x.Id == id);
-            return Ok(categories);
+            try
+            {
+                var categories = await context.Categories.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
+                return Ok(categories);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
         }
 
         [HttpPost]
